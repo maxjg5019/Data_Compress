@@ -1,10 +1,9 @@
 def compress(uncompressed):
-    """Compress a string to a list of output symbols."""
+    """將輸入字串壓縮成符號 List """
 
     # 產生初始編碼字典 0~255
     dict_size = 256
-    dictionary = dict((chr(i), i) for i in range(dict_size))
-    # in Python 3: dictionary = {chr(i): i for i in range(dict_size)}
+    dictionary = {chr(i): i for i in range(dict_size)}
 
     # 初始化，w為空字元，result為空串列
     w = ""
@@ -33,8 +32,7 @@ def decompress(compressed):
 
     # 產生初始編碼字典 0~255
     dict_size = 256
-    dictionary = dict((i, chr(i)) for i in range(dict_size))
-    # in Python 3: dictionary = {i: chr(i) for i in range(dict_size)}
+    dictionary = {i: chr(i) for i in range(dict_size)}
 
     # use StringIO, otherwise this becomes O(N^2)
     # due to string concatenation in a loop
@@ -59,7 +57,7 @@ def decompress(compressed):
 
 
 # 壓縮它 ! 先執行編碼，再解碼。:
-compressed = compress('ABBBACB')
+compressed = compress('ABCCAABCDDAACCDB')
 print (compressed)
 decompressed = decompress(compressed)
 print (decompressed)
