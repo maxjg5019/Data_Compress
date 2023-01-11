@@ -33,13 +33,13 @@ def decompress(compressed):
     Result = StringIO()
     Word = chr(compressed.pop(0))
     Result.write(Word)
-    for k in compressed:
-        if k in Dictionary:
-            Entry = Dictionary[k]
-        elif k == Dict_size:
+    for Code in compressed:
+        if Code in Dictionary:
+            Entry = Dictionary[Code]
+        elif Code == Dict_size:
             Entry = Word + Word[0]
         else:
-            raise ValueError('Bad compressed k: %s' % k)
+            raise ValueError('Bad compressed k: %s' % Code)
         Result.write(Entry)
 
         # 把新的符號(Word+Entry[0])加到字典中.
