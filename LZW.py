@@ -1,53 +1,53 @@
 def compress(uncompressed):
     # 產生初始編碼字典 0~127
-    dict_size = 128
-    dictionary = {chr(i): i for i in range(dict_size)}
+    Dict_size = 128
+    Dictionary = {chr(i): i for i in range(Dict_size)}
 
-    # 初始化，w為空字元，result為空串列
-    w = ""
-    result = []
+    # 初始化，Previous為空字元，Result為空串列
+    Previous = ""
+    Result = []
 
-    for c in uncompressed:
-        wc = w + c
-        if wc in dictionary:
-            w = wc
+    for Current in uncompressed:
+        Word = Previous + Current
+        if Word in Dictionary:
+            Previous = Word
         else:
-            result.append(dictionary[w])
-            # 把新的符號(wc)加到字典中.
-            dictionary[wc] = dict_size
-            dict_size += 1
-            w = c
+            Result.append(Dictionary[Previous])
+            # 把新的符號(Word)加到字典中.
+            Dictionary[Word] = Dict_size
+            Dict_size += 1
+            Previous = Current
 
     # 記得要把最後一個符號丟進字串裡面，我還沒上車R。
-    if w:
-        result.append(dictionary[w])
-    return result
+    if Previous:
+        Result.append(Dictionary[Previous])
+    return Result
 
 
 def decompress(compressed):
     from io import StringIO
     # 產生初始編碼字典 0~127
-    dict_size = 128
-    dictionary = {i: chr(i) for i in range(dict_size)}
+    Dict_size = 128
+    Dictionary = {i: chr(i) for i in range(Dict_size)}
 
-    result = StringIO()
-    w = chr(compressed.pop(0))
-    result.write(w)
+    Result = StringIO()
+    Word = chr(compressed.pop(0))
+    Result.write(Word)
     for k in compressed:
-        if k in dictionary:
-            entry = dictionary[k]
-        elif k == dict_size:
-            entry = w + w[0]
+        if k in Dictionary:
+            Entry = Dictionary[k]
+        elif k == Dict_size:
+            Entry = Word + Word[0]
         else:
             raise ValueError('Bad compressed k: %s' % k)
-        result.write(entry)
+        Result.write(Entry)
 
-        # 把新的符號(w+entry[0])加到字典中.
-        dictionary[dict_size] = w + entry[0]
-        dict_size += 1
+        # 把新的符號(Word+Entry[0])加到字典中.
+        Dictionary[Dict_size] = Word + Entry[0]
+        Dict_size += 1
 
-        w = entry
-    return result.getvalue()
+        Word = Entry
+    return Result.getvalue()
 
 
 # 壓縮它 ! 先編碼，再解碼。
