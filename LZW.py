@@ -6,24 +6,32 @@ def compress(uncompressed):
     # 初始化，Previous為空字元，Result為空串列
     Previous = ""
     Result = []
-
     for Current in uncompressed:
-        Word = Previous + Current
-        if Word in Dictionary:
-            Previous = Word
+        print("Previous:" + Previous)
+        print("Current:" + Current)
+        PC = Previous + Current
+        print("PC:" + PC)
+        if PC in Dictionary:
+            Previous = PC
+            print("PC有找到，P=P+C:" + Previous)
         else:
             Result.append(Dictionary[Previous])
-            # 把新的符號(Word)加到字典中.
-            Dictionary[Word] = Dict_size
+            print("PC沒找到，輸出 Previous: " + str(Dictionary[Previous]))
+            # print(Dictionary[Previous])
+            # 把新的符號(PC)加到字典中.
+            Dictionary[PC] = Dict_size
+            print("新增 " + PC + "到字典並編碼:" + str(Dict_size) )
             Dict_size += 1
             Previous = Current
-
+            print("更新:Previous =  " + Previous)
+        print("----------")
+    
     # 記得要把最後一個符號丟進字串裡面，我還沒上車R。
     if Previous:
         Result.append(Dictionary[Previous])
+        print("我還沒上車R，輸出 Previous " + str(Dictionary[Previous]))
     return Result
-
-
+    
 def decompress(compressed):
     from io import StringIO
     # 產生初始編碼字典 0~127
@@ -51,7 +59,9 @@ def decompress(compressed):
 
 
 # 壓縮它 ! 先編碼，再解碼。
-compressed = compress('ABABABABAB')
+compressed = compress('ABABBA')
 print (compressed)
+print("編碼結束")
 decompressed = decompress(compressed)
 print (decompressed)
+print("解碼結束")
