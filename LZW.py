@@ -13,10 +13,10 @@ def compress(uncompressed):
         print("PC:" + PC)
         if PC in Dictionary:
             Previous = PC
-            print("PC有找到，P=P+C:" + Previous)
+            print("PC有找到,P=P+C:" + Previous)
         else:
             Result.append(Dictionary[Previous])
-            print("PC沒找到，輸出 Previous: " + str(Dictionary[Previous]))
+            print("PC沒找到,輸出 Previous: " + str(Dictionary[Previous]))
             # print(Dictionary[Previous])
             # 把新的符號(PC)加到字典中.
             Dictionary[PC] = Dict_size
@@ -29,7 +29,7 @@ def compress(uncompressed):
     # 記得要把最後一個符號丟進字串裡面，我還沒上車R。
     if Previous:
         Result.append(Dictionary[Previous])
-        print("我還沒上車R，輸出 Previous " + str(Dictionary[Previous]))
+        print("我還沒上車R,輸出 Previous " + str(Dictionary[Previous]))
     return Result
     
 def decompress(compressed):
@@ -39,22 +39,24 @@ def decompress(compressed):
     Dictionary = {i: chr(i) for i in range(Dict_size)}
 
     Result = StringIO()
+    print("Cw讀取第一個符號: " + str(compressed[0]))
     Word = chr(compressed.pop(0))
+    print("解碼輸出Cw(): " + Word)
     Result.write(Word)
     for Code in compressed:
         if Code in Dictionary:
             Entry = Dictionary[Code]
         elif Code == Dict_size:
             Entry = Word + Word[0]
-        else:
-            raise ValueError('Bad compressed k: %s' % Code)
+        # else:
+        #     raise ValueError('Bad compressed k: %s' % Code)
         Result.write(Entry)
 
         # 把新的符號(Word+Entry[0])加到字典中.
         Dictionary[Dict_size] = Word + Entry[0]
         Dict_size += 1
-
         Word = Entry
+    print("----------")    
     return Result.getvalue()
 
 
@@ -62,6 +64,7 @@ def decompress(compressed):
 compressed = compress('ABABBA')
 print (compressed)
 print("編碼結束")
+print()
 decompressed = decompress(compressed)
 print (decompressed)
 print("解碼結束")
